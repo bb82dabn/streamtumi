@@ -1,0 +1,119 @@
+name: Bug report
+description: Report a reproducible problem in the StreamTumi v0.1 target
+title: "[Bug]: "
+labels: []
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for reporting a problem. The repository is transitioning to the v0.1 public target, so identify the exact release or commit you used.
+
+        Do not report security vulnerabilities here. Use the repository Security tab, select Advisories, and choose Report a vulnerability. Remove secrets, personal data, private URLs, and copyrighted media from this form.
+
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+      description: Provide the release tag or full commit hash.
+      placeholder: v0.1.0 or 0123456789abcdef...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Installation or upgrade
+        - Local authentication or authorization
+        - Web application or API
+        - Media upload, processing, or playback
+        - PostgreSQL
+        - Valkey or background jobs
+        - MinIO or object storage
+        - Caddy or external access
+        - Optional WeatherStar profile
+        - Optional YouTube import
+        - Local Expo or React Native build
+        - Local Roku build
+        - Documentation
+        - Other v0.1 target area
+    validations:
+      required: true
+
+  - type: dropdown
+    id: processing
+    attributes:
+      label: Processing mode
+      options:
+        - CPU default
+        - Optional GPU acceleration
+        - Not applicable
+        - Unknown
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Include host OS and architecture, Docker and Compose versions, browser or client, and relevant service image versions. Do not paste the full environment file.
+      placeholder: Debian 13 amd64; Docker ...; Compose ...; Chromium ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Reproduction steps
+      description: Use the smallest deterministic example possible.
+      placeholder: |
+        1. Start the CPU deployment with ...
+        2. Sign in with a local account.
+        3. Upload an authorized test file.
+        4. Observe ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: Include the complete error text when safe to share.
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Sanitized logs or media details
+      description: Redact passwords, tokens, cookies, personal data, private hostnames, signed URLs, and copyrighted content. Explain if logs are unavailable.
+      render: shell
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Note recent upgrades, configuration changes, optional profiles, storage pressure, or a possible regression range.
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Submission checks
+      options:
+        - label: I searched existing issues for this problem.
+          required: true
+        - label: This report contains no vulnerability details, credentials, private data, or unauthorized media.
+          required: true
+        - label: I identified commands or checks that I did not verify rather than presenting them as known working.
+          required: true
+        - label: This concerns the documented v0.1 target, not an excluded transition-era integration.
+          required: true

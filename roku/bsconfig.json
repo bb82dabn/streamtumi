@@ -1,0 +1,13 @@
+{
+  "rootDir": ".",
+  "files": [
+    "manifest",
+    "source/**/*",
+    "components/**/*",
+    "images/**/*"
+  ],
+  "stagingDir": "./build/staging",
+  "outDir": "./build",
+  "outFile": "build/streamtumi-roku.zip",
+  "createPackage": false
+}

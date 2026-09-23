@@ -1,0 +1,271 @@
+name: streamtumi
+
+x-app-environment: &app-environment
+  NODE_ENV: production
+  APP_URL: ${APP_URL:?Set APP_URL in .env}
+  APP_INTERNAL_HOSTS: ${APP_INTERNAL_HOSTS:-streamtumi-internal}
+  APP_SECRET: ${APP_SECRET:?Set APP_SECRET in .env}
+  ALLOW_INSECURE_HTTP: ${ALLOW_INSECURE_HTTP:-false}
+  REGISTRATION_ENABLED: ${REGISTRATION_ENABLED:-false}
+  APPLE_APP_ID: ${APPLE_APP_ID:-}
+  ANDROID_APP_CERT_SHA256: ${ANDROID_APP_CERT_SHA256:-}
+  SMTP_HOST: ${SMTP_HOST:-}
+  SMTP_PORT: ${SMTP_PORT:-587}
+  SMTP_SECURE: ${SMTP_SECURE:-false}
+  SMTP_USER: ${SMTP_USER:-}
+  SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+  EMAIL_FROM: ${EMAIL_FROM:-}
+  DATABASE_URL: ${DATABASE_URL:-postgresql://${POSTGRES_USER:-streamtumi}:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}@postgres:5432/${POSTGRES_DB:-streamtumi}}
+  REDIS_URL: ${REDIS_URL:-redis://valkey:6379}
+  S3_ENDPOINT: ${S3_ENDPOINT:-minio}
+  S3_PORT: ${S3_PORT:-9000}
+  S3_USE_SSL: ${S3_USE_SSL:-false}
+  S3_REGION: ${S3_REGION:-us-east-1}
+  S3_ACCESS_KEY: ${S3_ACCESS_KEY:-${MINIO_ROOT_USER:-streamtumi}}
+  S3_SECRET_KEY: ${S3_SECRET_KEY:-${MINIO_ROOT_PASSWORD:?Set MINIO_ROOT_PASSWORD in .env}}
+  S3_BUCKET: ${S3_BUCKET:-streamtumi}
+  MAX_UPLOAD_BYTES: ${MAX_UPLOAD_BYTES:-2147483648}
+  YOUTUBE_IMPORT_ENABLED: ${YOUTUBE_IMPORT_ENABLED:-false}
+  YOUTUBE_IMPORT_MAX_DURATION_SECONDS: ${YOUTUBE_IMPORT_MAX_DURATION_SECONDS:-21600}
+  YOUTUBE_IMPORT_METADATA_TIMEOUT_SECONDS: ${YOUTUBE_IMPORT_METADATA_TIMEOUT_SECONDS:-60}
+  YOUTUBE_IMPORT_DOWNLOAD_TIMEOUT_SECONDS: ${YOUTUBE_IMPORT_DOWNLOAD_TIMEOUT_SECONDS:-3600}
+  SESSION_TTL_DAYS: ${SESSION_TTL_DAYS:-30}
+  GUIDE_CATALOG_CACHE_SECONDS: ${GUIDE_CATALOG_CACHE_SECONDS:-5}
+  CHAT_RETENTION_DAYS: ${CHAT_RETENTION_DAYS:-30}
+  REPORT_RETENTION_DAYS: ${REPORT_RETENTION_DAYS:-365}
+  STATION_DELETE_GRACE_DAYS: ${STATION_DELETE_GRACE_DAYS:-7}
+  TRANSCODE_ACCELERATION: ${TRANSCODE_ACCELERATION:-cpu}
+  TRANSCODE_CONCURRENCY: ${TRANSCODE_CONCURRENCY:-1}
+  TRANSCODE_NVENC_PRESET: ${TRANSCODE_NVENC_PRESET:-p1}
+  TRANSCODE_CPU_PRESET: ${TRANSCODE_CPU_PRESET:-veryfast}
+  TRANSCODE_DOWNLOAD_CONCURRENCY: ${TRANSCODE_DOWNLOAD_CONCURRENCY:-4}
+  TRANSCODE_UPLOAD_CONCURRENCY: ${TRANSCODE_UPLOAD_CONCURRENCY:-4}
+  RADIO_PREP_CONCURRENCY: ${RADIO_PREP_CONCURRENCY:-1}
+  RADIO_PREP_TIMEOUT_SECONDS: ${RADIO_PREP_TIMEOUT_SECONDS:-7200}
+  RADIO_TRACK_MAX_DURATION_SECONDS: ${RADIO_TRACK_MAX_DURATION_SECONDS:-21600}
+  RADIO_PLAYOUT_MAX_STATIONS: ${RADIO_PLAYOUT_MAX_STATIONS:-2}
+  RADIO_PLAYOUT_LEASE_SECONDS: ${RADIO_PLAYOUT_LEASE_SECONDS:-20}
+  RADIO_PLAYOUT_RECONCILE_SECONDS: ${RADIO_PLAYOUT_RECONCILE_SECONDS:-5}
+  RADIO_HLS_SEGMENT_SECONDS: ${RADIO_HLS_SEGMENT_SECONDS:-4}
+  RADIO_STATIC_HLS_SEGMENT_SECONDS: ${RADIO_STATIC_HLS_SEGMENT_SECONDS:-1}
+  TV_PLAYOUT_MAX_STATIONS: ${TV_PLAYOUT_MAX_STATIONS:-2}
+  TV_PLAYOUT_LEASE_SECONDS: ${TV_PLAYOUT_LEASE_SECONDS:-20}
+  TV_PLAYOUT_RECONCILE_SECONDS: ${TV_PLAYOUT_RECONCILE_SECONDS:-2}
+  TV_SEGMENT_JOURNAL_RETENTION_DAYS: ${TV_SEGMENT_JOURNAL_RETENTION_DAYS:-7}
+  WEATHERSTAR_URL: ${WEATHERSTAR_URL:-http://ws4kp:8080}
+  WEATHER_RENDER_CONCURRENCY: ${WEATHER_RENDER_CONCURRENCY:-2}
+  WEATHER_RENDER_IDLE_SECONDS: ${WEATHER_RENDER_IDLE_SECONDS:-300}
+  WEATHER_RENDER_STARTUP_SECONDS: ${WEATHER_RENDER_STARTUP_SECONDS:-120}
+  WEATHER_RENDER_FRAME_RATE: ${WEATHER_RENDER_FRAME_RATE:-10}
+  WEATHER_CHROMIUM_PATH: ${WEATHER_CHROMIUM_PATH:-/usr/bin/chromium}
+
+x-app-build: &app-build
+  context: .
+
+x-app-service: &app-service
+  build: *app-build
+  environment: *app-environment
+  init: true
+  security_opt:
+    - no-new-privileges:true
+
+services:
+  postgres:
+    image: postgres:16.4-bookworm@sha256:e62fbf9d3e2b49816a32c400ed2dba83e3b361e6833e624024309c35d334b412
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-streamtumi}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+      POSTGRES_DB: ${POSTGRES_DB:-streamtumi}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "psql -U ${POSTGRES_USER:-streamtumi} -d ${POSTGRES_DB:-streamtumi} -tAc 'SELECT 1' >/dev/null"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+
+  valkey:
+    image: valkey/valkey:8.1.10-alpine@sha256:081c2f5cb575efc901aa80ff9cdbd1ec6a301682fd35e1ebb4b0990a4a4a8507
+    restart: unless-stopped
+    command: ["valkey-server", "--appendonly", "yes", "--maxmemory-policy", "noeviction"]
+    volumes:
+      - valkey-data:/data
+    healthcheck:
+      test: ["CMD", "valkey-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  minio:
+    image: minio/minio:RELEASE.2025-04-22T22-12-26Z@sha256:a1ea29fa28355559ef137d71fc570e508a214ec84ff8083e39bc5428980b015e
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-streamtumi}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:?Set MINIO_ROOT_PASSWORD in .env}
+    volumes:
+      - minio-data:/data
+    ports:
+      - "127.0.0.1:${MINIO_CONSOLE_PORT:-9001}:9001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:9000/minio/health/live"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  migrate:
+    <<: *app-service
+    restart: "no"
+    command: ["npm", "run", "db:migrate"]
+    depends_on:
+      postgres: { condition: service_healthy }
+      valkey: { condition: service_healthy }
+      minio: { condition: service_healthy }
+
+  app:
+    <<: *app-service
+    restart: unless-stopped
+    command: ["npm", "start"]
+    depends_on:
+      migrate: { condition: service_completed_successfully }
+    ports:
+      - "${APP_BIND_ADDRESS:-127.0.0.1}:${APP_PORT:-3000}:3000"
+    networks:
+      default:
+        aliases:
+          - streamtumi-internal
+
+  worker:
+    <<: *app-service
+    restart: unless-stopped
+    command: ["npm", "run", "worker"]
+    depends_on:
+      app: { condition: service_healthy }
+    healthcheck:
+      test: ["CMD", "node", "-e", "const Redis=require('ioredis');const os=require('node:os');const r=new Redis(process.env.REDIS_URL);(async()=>{const v=await r.get('health:worker:transcode:'+os.hostname());r.disconnect();process.exit(v?0:1)})().catch(()=>process.exit(1))"]
+      interval: 20s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+  media-worker:
+    <<: *app-service
+    profiles: ["media", "tv"]
+    restart: unless-stopped
+    command: ["npm", "run", "media-worker"]
+    depends_on:
+      app: { condition: service_healthy }
+    healthcheck:
+      test: ["CMD", "node", "-e", "const Redis=require('ioredis');const os=require('node:os');const r=new Redis(process.env.REDIS_URL);(async()=>{const v=await r.get('health:worker:media:'+os.hostname());r.disconnect();process.exit(v?0:1)})().catch(()=>process.exit(1))"]
+      interval: 20s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+  radio-worker:
+    <<: *app-service
+    profiles: ["radio"]
+    restart: unless-stopped
+    command: ["npm", "run", "radio-worker"]
+    depends_on:
+      app: { condition: service_healthy }
+    healthcheck:
+      test: ["CMD", "node", "-e", "const Redis=require('ioredis');const os=require('node:os');const r=new Redis(process.env.REDIS_URL);(async()=>{const v=await r.get('health:worker:radio-prep:'+os.hostname());r.disconnect();process.exit(v?0:1)})().catch(()=>process.exit(1))"]
+      interval: 20s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+  radio-playout:
+    <<: *app-service
+    profiles: ["radio"]
+    restart: unless-stopped
+    command: ["npm", "run", "radio-playout"]
+    depends_on:
+      app: { condition: service_healthy }
+    healthcheck:
+      test: ["CMD", "node", "-e", "const Redis=require('ioredis');const os=require('node:os');const r=new Redis(process.env.REDIS_URL);(async()=>{const v=await r.get('health:worker:radio-playout:'+os.hostname());r.disconnect();process.exit(v?0:1)})().catch(()=>process.exit(1))"]
+      interval: 20s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+  tv-playout:
+    <<: *app-service
+    profiles: ["tv"]
+    restart: unless-stopped
+    command: ["npm", "run", "tv-playout"]
+    depends_on:
+      app: { condition: service_healthy }
+    healthcheck:
+      test: ["CMD", "node", "-e", "const Redis=require('ioredis');const os=require('node:os');const r=new Redis(process.env.REDIS_URL);(async()=>{const v=await r.get('health:worker:tv-playout:'+os.hostname());r.disconnect();process.exit(v?0:1)})().catch(()=>process.exit(1))"]
+      interval: 20s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+  ws4kp:
+    profiles: ["weather"]
+    build:
+      context: ./third_party/ws4kp
+      dockerfile: Dockerfile.server
+    restart: unless-stopped
+    expose: ["8080"]
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8080/').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  weather-renderer:
+    <<: *app-service
+    profiles: ["weather"]
+    build:
+      context: .
+      target: weather-runner
+    restart: unless-stopped
+    command: ["npm", "run", "weather-renderer"]
+    read_only: true
+    cap_drop: [ALL]
+    shm_size: "1gb"
+    stop_grace_period: 90s
+    tmpfs:
+      - /tmp:size=2g,mode=1777
+    healthcheck:
+      test: ["CMD", "node", "-e", "const Redis=require('ioredis');const os=require('node:os');const r=new Redis(process.env.REDIS_URL);(async()=>{const value=await r.get('health:worker:weather:'+os.hostname());r.disconnect();process.exit(value?0:1)})().catch(()=>process.exit(1))"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    depends_on:
+      app: { condition: service_healthy }
+      ws4kp: { condition: service_healthy }
+
+  caddy:
+    image: caddy:2.8.4-alpine@sha256:af32e97399febea808609119bb21544d0265c58a02836576e32a2d082c262c17
+    profiles: ["proxy"]
+    restart: unless-stopped
+    environment:
+      APP_DOMAIN: ${APP_DOMAIN:?Set APP_DOMAIN in .env}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on:
+      app: { condition: service_healthy }
+
+volumes:
+  postgres-data:
+  valkey-data:
+  minio-data:
+  caddy-data:
+  caddy-config:

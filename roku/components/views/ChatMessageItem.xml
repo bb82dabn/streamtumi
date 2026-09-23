@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="ChatMessageItem" extends="Group">
+  <interface>
+    <field id="itemContent" type="node" onChange="onContentChanged" />
+    <field id="focusPercent" type="float" onChange="onFocusChanged" />
+  </interface>
+  <children>
+    <Rectangle id="focusBorder" width="452" height="98" color="#71717a" visible="false" />
+    <Rectangle id="surface" translation="[3,3]" width="446" height="92" color="#1c1c24" />
+    <Rectangle id="accent" translation="[3,3]" width="5" height="92" color="#3f3f46" />
+    <Rectangle id="avatarFallback" translation="[16,17]" width="64" height="64" color="#34343e" />
+    <Label id="avatarInitials" translation="[16,28]" width="64" height="42" font="font:MediumBoldSystemFont" color="#ffffff" horizAlign="center" maxLines="1" />
+    <Poster id="avatar" translation="[16,17]" width="64" height="64" loadWidth="96" loadHeight="96" loadDisplayMode="scaleToZoom" visible="false" />
+    <Label id="author" translation="[94,10]" width="226" height="32" font="font:MediumBoldSystemFont" color="#ffffff" maxLines="1" />
+    <Label id="badge" translation="[326,12]" width="104" height="28" font="font:SmallSystemFont" color="#ff6b6d" horizAlign="right" maxLines="1" />
+    <Label id="message" translation="[94,43]" width="336" height="48" font="font:MediumSystemFont" color="#f4f4f5" maxLines="2" wrap="true" />
+  </children>
+  <script type="text/brightscript" uri="pkg:/components/views/ChatMessageItem.brs" />
+</component>

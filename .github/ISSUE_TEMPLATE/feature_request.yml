@@ -1,0 +1,88 @@
+name: Feature request
+description: Propose a focused improvement to the StreamTumi public target
+title: "[Feature]: "
+labels: []
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Describe the user problem before proposing implementation details. StreamTumi is transitioning to a standalone v0.1 release with local password authentication, CPU-first media processing, and operator-owned data.
+
+        SableID, Apple login, Red Devil, generic relays, live Studio, MediaMTX, coturn, Cast, Sentry, and EAS are outside the v0.1 target.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or use case
+      description: Who has the problem, what are they trying to do, and why are current capabilities insufficient?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+      description: Describe observable behavior and boundaries, not only an implementation.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Include workarounds and simpler options.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Primary area
+      options:
+        - Core standalone application
+        - Local authentication or authorization
+        - Media processing or playback
+        - Self-hosting and operations
+        - Optional WeatherStar profile
+        - Optional YouTube import
+        - Local Expo or React Native source
+        - Local Roku source
+        - Documentation or governance
+        - Future scope beyond v0.1
+    validations:
+      required: true
+
+  - type: textarea
+    id: operations
+    attributes:
+      label: Operational and security impact
+      description: Address new ingress or egress, secrets, stored data, migrations, backups, CPU/GPU needs, and failure behavior.
+    validations:
+      required: true
+
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Third-party impact
+      description: List proposed packages, services, media sources, APIs, licenses, platform terms, or trademarks. Enter "None known" when appropriate.
+    validations:
+      required: true
+
+  - type: textarea
+    id: contribution
+    attributes:
+      label: Contribution interest
+      description: State whether you can help design, implement, test, or document the change.
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Submission checks
+      options:
+        - label: I searched existing issues and requests.
+          required: true
+        - label: I have not included credentials, personal data, or private vulnerability details.
+          required: true
+        - label: I understand that a request outside the v0.1 target may be deferred or declined.
+          required: true

@@ -1,0 +1,61 @@
+{
+  "expo": {
+    "name": "StreamTumi",
+    "slug": "streamtumi",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "streamtumi",
+    "userInterfaceStyle": "dark",
+    "icon": "./assets/icon-512.png",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.streamtumi.mobile",
+      "buildNumber": "1",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "package": "com.streamtumi.mobile",
+      "versionCode": 7,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon-maskable-512.png",
+        "backgroundColor": "#050708"
+      }
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-video",
+        {
+          "supportsBackgroundPlayback": false,
+          "supportsPictureInPicture": true
+        }
+      ],
+      [
+        "expo-audio",
+        {
+          "microphonePermission": false,
+          "recordAudioAndroid": false,
+          "enableBackgroundPlayback": true
+        }
+      ],
+      "expo-secure-store",
+      "expo-asset",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow StreamTumi to choose a community profile photo.",
+          "cameraPermission": false,
+          "microphonePermission": false
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}

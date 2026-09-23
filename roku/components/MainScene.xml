@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="MainScene" extends="Scene">
+  <children>
+    <Rectangle id="background" width="1920" height="1080" color="#09090b" />
+
+    <Group id="browseGroup">
+      <Poster id="appLogo" translation="[72,26]" width="390" height="76" uri="pkg:/images/streamtumi-logo-v2.png" loadDisplayMode="scaleToFit" />
+      <LayoutGroup id="filterBar" translation="[480,35]" layoutDirection="horiz" itemSpacings="[14]" vertAlignment="center">
+        <Button id="roomButton" text="Private room" minWidth="220" />
+        <Button id="genreButton" text="Genre  All" minWidth="240" />
+        <Button id="sortButton" text="Sort  Popular" minWidth="240" />
+        <Button id="statusButton" text="On air  All" minWidth="200" />
+        <Button id="chatButton" text="Chat  Off" minWidth="180" />
+        <Button id="explicitButton" text="18+  Off" minWidth="160" />
+      </LayoutGroup>
+      <Label id="catalogState" translation="[1450,108]" width="398" height="28" text="Updating stations…" font="font:SmallSystemFont" color="#a1a1aa" horizAlign="right" />
+
+      <Rectangle translation="[0,146]" width="1920" height="294" color="#141419" />
+      <Poster id="heroArtwork" translation="[1100,146]" width="820" height="294" loadWidth="820" loadHeight="294" loadDisplayMode="scaleToZoom" opacity="0.64" />
+      <Rectangle translation="[0,146]" width="1920" height="294" color="#09090b77" />
+      <Label id="heroEyebrow" translation="[72,184]" width="780" height="32" font="font:SmallSystemFont" color="#ff6b6d" />
+      <Label id="heroTitle" translation="[72,222]" width="950" height="64" font="font:LargeBoldSystemFont" color="#ffffff" maxLines="1" />
+      <Label id="heroDescription" translation="[72,292]" width="920" height="74" font="font:MediumSystemFont" color="#f4f4f5" maxLines="2" wrap="true" />
+      <Label id="heroMeta" translation="[72,386]" width="1020" height="32" font="font:SmallSystemFont" color="#d4d4d8" />
+
+      <StationRowList
+        id="stationRows"
+        translation="[72,458]"
+        itemComponentName="StationCard"
+        itemSize="[1776,252]"
+        itemSpacing="[0,6]"
+        numRows="2"
+        rowItemSize="[[320,180]]"
+        rowItemSpacing="[[28,0]]"
+        rowLabelOffset="[[0,0]]"
+        showRowLabel="[true]"
+        rowLabelColor="#ffffff"
+        rowLabelFont="font:MediumBoldSystemFont"
+        focusXOffset="[0]"
+        vertFocusAnimationStyle="fixedFocus"
+      />
+      <Label id="browseHint" translation="[72,1032]" width="1776" height="28" text="OK  Watch     ↑  Actions and filters     *  Account     →  Chat during playback" font="font:SmallSystemFont" color="#d4d4d8" horizAlign="center" />
+    </Group>
+
+    <StreamVideo id="video" width="1920" height="1080" maxVideoDecodeResolution="[1280,720]" visible="false" enableUI="false" />
+    <Audio id="audio" />
+    <Group id="radioVisual" visible="false">
+      <Rectangle width="1920" height="1080" color="#09090b" />
+      <Rectangle translation="[578,138]" width="764" height="704" color="#3f3f46" />
+      <Rectangle translation="[582,142]" width="756" height="696" color="#17171d" />
+      <Label translation="[650,430]" width="620" height="70" text="StreamTumi Radio" font="font:LargeBoldSystemFont" color="#ff4d4f" horizAlign="center" />
+      <Label translation="[650,505]" width="620" height="38" text="LIVE AUDIO" font="font:MediumBoldSystemFont" color="#a1a1aa" horizAlign="center" />
+      <Poster id="radioArtwork" translation="[582,142]" width="756" height="696" loadWidth="756" loadHeight="696" loadDisplayMode="scaleToFit" />
+      <Label id="radioKind" translation="[160,860]" width="1600" height="32" text="RADIO · ON AIR" font="font:SmallSystemFont" color="#ff6b6d" horizAlign="center" />
+      <Label id="radioTrackTitle" translation="[160,900]" width="1600" height="58" font="font:LargeBoldSystemFont" color="#ffffff" horizAlign="center" maxLines="1" />
+      <Label id="radioArtist" translation="[160,960]" width="1600" height="42" font="font:LargeSystemFont" color="#e4e4e7" horizAlign="center" maxLines="1" />
+      <Label id="radioContext" translation="[160,1010]" width="1600" height="32" font="font:SmallSystemFont" color="#a1a1aa" horizAlign="center" maxLines="1" />
+    </Group>
+    <Poster id="playerSlate" width="1920" height="1080" loadDisplayMode="scaleToZoom" visible="false" />
+    <Rectangle id="playerShade" width="1920" height="155" color="#09090bdd" visible="false" />
+    <Group id="playerInfo" visible="false">
+      <Label id="playerStatus" translation="[56,30]" width="240" height="28" text="ON AIR" font="font:SmallSystemFont" color="#ff4d4f" />
+      <Label id="playerTitle" translation="[56,62]" width="1050" height="48" font="font:LargeBoldSystemFont" color="#ffffff" maxLines="1" />
+      <Label id="programTitle" translation="[56,112]" width="1100" height="32" font="font:MediumSystemFont" color="#d4d4d8" maxLines="1" />
+      <Label id="playerHint" translation="[1160,64]" width="700" height="45" text="↑/↓  Change station     →  Live chat" font="font:MediumSystemFont" color="#ffffff" horizAlign="right" />
+    </Group>
+    <PlayerKeyCatcher id="playerKeyCatcher" />
+    <PlayerKeyCatcher id="modalKeyCatcher" />
+
+    <Group id="chatPanel" translation="[1400,0]" visible="false">
+      <Rectangle width="520" height="1080" color="#111116f5" />
+      <Label translation="[34,38]" width="452" height="48" text="Live chat" font="font:LargeBoldSystemFont" color="#ffffff" />
+      <Rectangle translation="[34,98]" width="452" height="2" color="#3f3f46" />
+      <MarkupList id="chatList" translation="[34,116]" itemComponentName="ChatMessageItem" itemSize="[452,98]" itemSpacing="[0,10]" numRows="8" drawFocusFeedback="false" />
+      <Label id="chatState" translation="[34,1012]" width="452" height="34" text="Loading chat…" font="font:SmallSystemFont" color="#a1a1aa" />
+    </Group>
+
+    <Group id="transitionOverlay" visible="false">
+      <Rectangle width="1920" height="1080" color="#09090b" />
+      <Label translation="[210,430]" width="1500" height="60" text="STAND BY" font="font:LargeBoldSystemFont" color="#ff4d4f" horizAlign="center" />
+      <Label id="transitionTitle" translation="[210,505]" width="1500" height="60" text="The next program begins shortly" font="font:LargeSystemFont" color="#ffffff" horizAlign="center" />
+    </Group>
+
+    <Group id="weatherStandby" visible="false">
+      <Rectangle width="1920" height="1080" color="#07090d" />
+      <Rectangle translation="[0,0]" width="1920" height="12" color="#ff4d4f" />
+      <Poster translation="[690,208]" width="540" height="92" uri="pkg:/images/streamtumi-logo-v2.png" loadDisplayMode="scaleToFit" />
+      <Label translation="[260,350]" width="1400" height="38" text="STREAMTUMI WEATHER" font="font:MediumBoldSystemFont" color="#ff6b6d" horizAlign="center" />
+      <BusySpinner id="weatherStandbySpinner" translation="[912,430]" spinInterval="1" control="start" />
+      <Label translation="[260,575]" width="1400" height="64" text="Preparing your local forecast" font="font:LargeBoldSystemFont" color="#ffffff" horizAlign="center" />
+      <Label id="weatherStandbyStatus" translation="[410,665]" width="1100" height="80" text="Starting your local WeatherStar feed…" font="font:MediumSystemFont" color="#d4d4d8" horizAlign="center" wrap="true" />
+      <Label translation="[360,805]" width="1200" height="44" text="Please stand by · Live playback will begin automatically" font="font:SmallSystemFont" color="#8f95a3" horizAlign="center" />
+    </Group>
+
+    <Group id="loadingOverlay" visible="true">
+      <Rectangle width="1920" height="1080" color="#09090bf2" />
+      <BusySpinner translation="[912,455]" spinInterval="1" control="start" />
+      <Label id="loadingText" translation="[510,580]" width="900" height="48" text="Loading StreamTumi stations…" font="font:MediumSystemFont" color="#ffffff" horizAlign="center" />
+    </Group>
+
+    <Group id="errorOverlay" visible="false">
+      <Rectangle width="1920" height="1080" color="#09090bf5" />
+      <Label translation="[360,360]" width="1200" height="70" text="StreamTumi is unavailable" font="font:LargeBoldSystemFont" color="#ffffff" horizAlign="center" />
+      <Label id="errorMessage" translation="[460,455]" width="1000" height="100" font="font:MediumSystemFont" color="#d4d4d8" horizAlign="center" wrap="true" />
+      <Button id="retryButton" translation="[810,610]" minWidth="300" text="Try again" />
+    </Group>
+
+    <Group id="accountOverlay" visible="false">
+      <Rectangle width="1920" height="1080" color="#09090bf7" />
+      <Rectangle translation="[390,145]" width="1140" height="790" color="#18181f" />
+      <Rectangle translation="[390,145]" width="8" height="790" color="#ff4d4f" />
+      <Label translation="[490,205]" width="940" height="58" text="StreamTumi account" font="font:LargeBoldSystemFont" color="#ffffff" horizAlign="center" />
+      <Group id="accountMenuGroup">
+        <Label id="accountSummary" translation="[520,300]" width="880" height="82" text="This Roku is not linked." font="font:MediumSystemFont" color="#d4d4d8" horizAlign="center" wrap="true" />
+        <Button id="accountPairButton" translation="[690,420]" minWidth="540" text="Pair from browser or phone" />
+        <Button id="accountLoginButton" translation="[690,520]" minWidth="540" text="Sign in with email" />
+        <Button id="accountUnlinkButton" translation="[690,470]" minWidth="540" text="Unlink this Roku" visible="false" />
+        <Button id="accountCloseButton" translation="[760,690]" minWidth="400" text="Close" />
+        <Label translation="[520,825]" width="880" height="34" text="Back or *  Close" font="font:SmallSystemFont" color="#a1a1aa" horizAlign="center" />
+      </Group>
+      <Group id="accountLoginGroup" visible="false">
+        <Label id="loginPrompt" translation="[520,286]" width="880" height="42" text="Enter your email address" font="font:LargeSystemFont" color="#ffffff" horizAlign="center" />
+        <Keyboard id="loginKeyboard" translation="[510,350]" />
+        <Label id="loginStatus" translation="[520,800]" width="880" height="62" font="font:MediumSystemFont" color="#ffb4b5" horizAlign="center" wrap="true" />
+        <Label id="loginHint" translation="[520,875]" width="880" height="34" text="Play/Pause  Continue     Back  Account menu     *  Symbols/case" font="font:SmallSystemFont" color="#a1a1aa" horizAlign="center" />
+      </Group>
+    </Group>
+
+    <Group id="activationOverlay" visible="false">
+      <Rectangle width="1920" height="1080" color="#09090bf7" />
+      <Rectangle translation="[420,175]" width="1080" height="730" color="#18181f" />
+      <Rectangle translation="[420,175]" width="8" height="730" color="#ff4d4f" />
+      <Poster translation="[690,228]" width="540" height="92" uri="pkg:/images/streamtumi-logo-v2.png" loadDisplayMode="scaleToFit" />
+      <Label id="activationTitle" translation="[520,350]" width="880" height="58" text="Link this Roku" font="font:LargeBoldSystemFont" color="#ffffff" horizAlign="center" />
+      <Label id="activationStatus" translation="[560,422]" width="800" height="70" text="Requesting a secure activation code…" font="font:MediumSystemFont" color="#d4d4d8" horizAlign="center" wrap="true" />
+      <Label id="activationCode" translation="[520,525]" width="880" height="90" font="font:LargeBoldSystemFont" color="#ff6b6d" horizAlign="center" />
+      <Label id="activationUrl" translation="[520,632]" width="880" height="48" font="font:LargeSystemFont" color="#ffffff" horizAlign="center" />
+      <Label id="activationHint" translation="[520,770]" width="880" height="42" text="Back  Close" font="font:MediumSystemFont" color="#a1a1aa" horizAlign="center" />
+    </Group>
+
+    <Group id="roomOverlay" visible="false">
+      <Rectangle width="1920" height="1080" color="#09090bf7" />
+      <Rectangle translation="[520,105]" width="880" height="870" color="#18181f" />
+      <Rectangle translation="[520,105]" width="8" height="870" color="#ff4d4f" />
+      <Label translation="[620,160]" width="680" height="58" text="Enter a private room" font="font:LargeBoldSystemFont" color="#ffffff" horizAlign="center" />
+      <Label translation="[620,226]" width="680" height="38" text="Use the six-digit key shared by the room owner." font="font:MediumSystemFont" color="#d4d4d8" horizAlign="center" />
+      <Label id="roomCode" translation="[620,285]" width="680" height="74" text="_  _  _  _  _  _" font="font:LargeBoldSystemFont" color="#ff6b6d" horizAlign="center" />
+      <Rectangle id="roomFocusRing" translation="[665,375]" width="190" height="76" color="#ff4d4f" />
+      <Button id="roomDigit1" translation="[675,385]" minWidth="170" text="1" />
+      <Button id="roomDigit2" translation="[875,385]" minWidth="170" text="2" />
+      <Button id="roomDigit3" translation="[1075,385]" minWidth="170" text="3" />
+      <Button id="roomDigit4" translation="[675,485]" minWidth="170" text="4" />
+      <Button id="roomDigit5" translation="[875,485]" minWidth="170" text="5" />
+      <Button id="roomDigit6" translation="[1075,485]" minWidth="170" text="6" />
+      <Button id="roomDigit7" translation="[675,585]" minWidth="170" text="7" />
+      <Button id="roomDigit8" translation="[875,585]" minWidth="170" text="8" />
+      <Button id="roomDigit9" translation="[1075,585]" minWidth="170" text="9" />
+      <Button id="roomDelete" translation="[675,685]" minWidth="170" text="Delete" />
+      <Button id="roomDigit0" translation="[875,685]" minWidth="170" text="0" />
+      <Button id="roomJoin" translation="[1075,685]" minWidth="170" text="Join" />
+      <Label id="roomStatus" translation="[620,800]" width="680" height="105" font="font:MediumSystemFont" color="#ffb4b5" horizAlign="center" vertAlign="center" wrap="true" maxLines="3" />
+      <Label translation="[620,925]" width="680" height="32" text="Arrow keys  Move     OK  Select     Back or *  Close" font="font:SmallSystemFont" color="#a1a1aa" horizAlign="center" />
+    </Group>
+
+    <ApiTask id="catalogTask" />
+    <ApiTask id="stationTask" />
+    <ApiTask id="chatTask" />
+    <ApiTask id="deviceTask" />
+    <ApiTask id="tuneTask" />
+    <ApiTask id="weatherTask" />
+    <ApiTask id="roomAccessTask" />
+    <ApiTask id="privateRoomTask" />
+    <ApiTask id="roomSessionTask" />
+    <ApiTask id="savedRoomTask" />
+    <Timer id="chatTimer" duration="5" repeat="true" />
+    <Timer id="syncTimer" duration="30" repeat="true" />
+    <Timer id="transitionTimer" duration="1" repeat="false" />
+    <Timer id="playerInfoTimer" duration="30" repeat="false" />
+    <Timer id="catalogTimer" duration="30" repeat="true" />
+    <Timer id="radioVisualTimer" duration="15" repeat="false" />
+    <Timer id="devicePollTimer" duration="5" repeat="false" />
+    <Timer id="tuneTimer" duration="30" repeat="false" />
+    <Timer id="weatherRetryTimer" duration="2" repeat="false" />
+    <Timer id="mediaRetryTimer" duration="2" repeat="false" />
+    <Timer id="modalFocusTimer" duration="0.05" repeat="false" />
+  </children>
+  <script type="text/brightscript" uri="pkg:/source/config.brs" />
+  <script type="text/brightscript" uri="pkg:/components/MainScene.brs" />
+</component>

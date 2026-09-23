@@ -1,0 +1,13 @@
+title=StreamTumi
+subtitle=Self-hosted stations and private rooms on Roku
+major_version=0
+minor_version=1
+build_version=0
+ui_resolutions=fhd
+api_origin=https://streamtumi.invalid
+splash_color=#09090b
+splash_min_time=1500
+mm_icon_focus_fhd=pkg:/images/channel-tile-v2_fhd.png
+mm_icon_focus_hd=pkg:/images/channel-tile-v2_hd.png
+splash_screen_fhd=pkg:/images/splash-v2_fhd.png
+splash_screen_hd=pkg:/images/splash-v2_hd.png

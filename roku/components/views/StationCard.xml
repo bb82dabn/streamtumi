@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="StationCard" extends="Group">
+  <interface>
+    <field id="itemContent" type="node" onChange="onContentChanged" />
+    <field id="focusPercent" type="float" onChange="onFocusChanged" />
+  </interface>
+  <children>
+    <Rectangle id="focusRing" translation="[-4,-4]" width="328" height="188" color="#ffffff" visible="false" />
+    <Rectangle id="backdrop" width="320" height="180" color="#202027" />
+    <Poster id="artwork" width="320" height="180" loadWidth="320" loadHeight="180" loadDisplayMode="scaleToZoom" />
+    <Rectangle id="shade" translation="[0,112]" width="320" height="68" color="#09090bdd" />
+    <Label id="title" translation="[14,119]" width="240" height="30" font="font:MediumSystemFont" color="#ffffff" maxLines="1" />
+    <Label id="meta" translation="[14,149]" width="282" height="24" font="font:SmallSystemFont" color="#d4d4d8" maxLines="1" />
+    <Label id="live" translation="[251,120]" width="54" height="24" horizAlign="center" font="font:SmallSystemFont" color="#ffffff" />
+  </children>
+  <script type="text/brightscript" uri="pkg:/components/views/StationCard.brs" />
+</component>

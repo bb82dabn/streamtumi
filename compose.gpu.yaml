@@ -1,0 +1,7 @@
+services:
+  worker:
+    environment:
+      TRANSCODE_ACCELERATION: ${TRANSCODE_ACCELERATION:-auto}
+      NVIDIA_VISIBLE_DEVICES: all
+      NVIDIA_DRIVER_CAPABILITIES: video,utility,compute
+    gpus: all
