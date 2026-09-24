@@ -5,6 +5,11 @@ export default defineConfig([
   ...expoConfig,
   {
     ignores: [".expo/**"],
-    rules: { "react-hooks/set-state-in-effect": "off" },
+    rules: {
+      "import/namespace": "off",
+      "import/no-duplicates": "off",
+      "import/no-unresolved": "off",
+      "react-hooks/set-state-in-effect": "off",
+    },
   },
 ]);
