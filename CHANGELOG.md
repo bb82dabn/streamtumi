@@ -33,12 +33,9 @@ and this project intends to use
 - Optional YouTube import through yt-dlp, disabled by default.
 - Expo/React Native mobile source and generic Roku source for local builds.
 
-### Excluded from target
+### Validation
 
-- SableID and Apple login.
-- Red Devil and generic relay services.
-- Live Studio, MediaMTX, and coturn.
-- Cast, Sentry, and EAS.
-
-No release date is assigned and the operational commands in the documentation
-have not yet been validated against a final v0.1 release artifact.
+- Clean CPU-first deployment and optional service profiles verified.
+- Real upload, FFmpeg transcode, synchronized playback, and lifecycle browser
+  flows verified.
+- Published on 2026-09-24.

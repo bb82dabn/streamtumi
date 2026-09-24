@@ -105,8 +105,8 @@ builds can also incorporate Apple or Android SDK materials governed by their
 own terms. Review generated native projects and all packaged artifacts; do not
 apply the StreamTumi MIT License to third-party code.
 
-The v0.1 target supports local mobile builds only. It does not require or
-include EAS services, Sentry, Cast, or Apple login.
+The v0.1 target supports local mobile builds using the checked-in source and
+operator-owned configuration.
 
 ## Roku source and tooling
 

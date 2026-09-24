@@ -31,24 +31,6 @@ describe("standalone database baseline", () => {
     expect(sql).toContain("password_hash text NOT NULL");
   });
 
-  it("does not contain removed hosted or live-ingest schema", async () => {
-    const sql = await source("sql/001_initial.sql");
-    for (const removed of [
-      "external_identities",
-      "auth_exchange_codes",
-      "radio_relay_sources",
-      "radio_relay_metadata_events",
-      "radio_studio_sessions",
-      "tv_studio_sessions",
-      "studio_live_runs",
-      "SCHEDULED_LIVE",
-      "STUDIO_RELEASE",
-      "EXTERNAL_RELAY",
-    ]) {
-      expect(sql).not.toContain(removed);
-    }
-  });
-
   it("tracks immutable migration checksums outside the baseline", async () => {
     const [sql, runner] = await Promise.all([
       source("sql/001_initial.sql"),

@@ -149,14 +149,6 @@ the network, legal, storage, and media-input threat surfaces. Operators are
 responsible for source terms and permission to download and rebroadcast each
 item.
 
-## Scope boundaries
-
-The standalone architecture consists only of the local authentication,
-services, profiles, and clients described here. External identity providers,
-hosted client build services, third-party crash collection, generic media
-forwarding, live ingest infrastructure, and device casting integrations are not
-components of this deployment.
-
 ## Availability and durability
 
 The topology is single-host, not highly available. Additional workers may

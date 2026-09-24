@@ -35,10 +35,9 @@ Not run:
 ## Checklist
 
 - [ ] The change is focused and follows `CONTRIBUTING.md`.
-- [ ] The change targets local password authentication and does not add
-      SableID or Apple login.
-- [ ] The change does not add Red Devil, generic relays, live Studio,
-      MediaMTX, coturn, Cast, Sentry, or EAS to the v0.1 target.
+- [ ] The change preserves local authentication and operator-owned runtime
+      services.
+- [ ] The change does not introduce a mandatory hosted runtime dependency.
 - [ ] CPU operation remains the default; GPU behavior is optional and tested
       separately when affected.
 - [ ] Weather and YouTube behavior remains optional, with YouTube disabled by

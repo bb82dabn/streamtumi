@@ -2,8 +2,7 @@
 -- PostgreSQL database dump
 --
 
--- StreamTumi v0.1 standalone baseline. Generated from the final schema after
--- removing hosted identity, external relay, and live ingest infrastructure.
+-- StreamTumi v0.1 standalone baseline generated from the final public schema.
 
 -- Dumped from database version 16.4 (Debian 16.4-1.pgdg120+2)
 -- Dumped by pg_dump version 16.4 (Debian 16.4-1.pgdg120+2)

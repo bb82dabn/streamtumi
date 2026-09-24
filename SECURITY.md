@@ -57,7 +57,3 @@ Self-hosters are responsible for TLS, host and container updates, secret
 management, backups, access control, network exposure, and third-party service
 configuration. Review `docs/self-hosting.md`, `docs/external-access.md`, and
 `docs/upgrading.md`.
-
-The v0.1 security boundary does not include transition-era integrations such
-as SableID, Apple login, Red Devil, generic relays, live Studio, MediaMTX,
-coturn, Cast, Sentry, or EAS.

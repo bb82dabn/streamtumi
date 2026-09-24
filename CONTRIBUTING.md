@@ -5,16 +5,12 @@ Thank you for helping improve StreamTumi.
 ## v0.1 scope
 
 The repository is transitioning to the v0.1 public-release target described in
-`docs/architecture.md`. Some checked-in code and configuration still mention
-systems outside that target. New work should move toward the documented
-standalone architecture rather than extend transition-only integrations.
+`docs/architecture.md`. New work should preserve the documented standalone
+architecture and operator-owned deployment model.
 
 The target uses local password authentication, PostgreSQL, Valkey, MinIO,
 Caddy, and FFmpeg. WeatherStar 4000+ and YouTube import are optional. CPU media
 processing is the default, with GPU acceleration as an explicit option.
-
-SableID, Apple login, Red Devil, generic relays, live Studio, MediaMTX, coturn,
-Cast, Sentry, and EAS are not in the v0.1 public target.
 
 ## Before opening a change
 
@@ -46,8 +42,7 @@ optional acceleration. Do not make a test depend on YouTube or public weather
 services when a deterministic local fixture can cover the behavior.
 
 For mobile changes, use the local scripts under `apps/mobile`. For Roku
-changes, use the checked-in generic Roku source and local tooling. Remote EAS,
-Sentry, Cast, and hosted Roku release workflows are outside the v0.1 target.
+changes, use the checked-in generic Roku source and local tooling.
 
 ## Pull requests
 

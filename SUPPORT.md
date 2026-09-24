@@ -34,13 +34,10 @@ GitHub private vulnerability reporting instead.
 
 The v0.1 target covers the standalone app with local password authentication,
 PostgreSQL, Valkey, MinIO, Caddy, FFmpeg, optional WeatherStar 4000+, optional
-yt-dlp, and local mobile and Roku source builds.
-
-Transition-era SableID, Apple login, Red Devil, generic relays, live Studio,
-MediaMTX, coturn, Cast, Sentry, and EAS integrations are outside the public
-support target. Maintainers also cannot provide individual legal advice,
-recover lost operator secrets, administer third-party accounts, or guarantee
-that imported media may lawfully be downloaded or rebroadcast.
+yt-dlp, and local mobile and Roku source builds. Maintainers cannot provide
+individual legal advice, recover lost operator secrets, administer third-party
+accounts, or guarantee that imported media may lawfully be downloaded or
+rebroadcast.
 
 Weather output is informational and must not be used for safety-critical
 decisions. For official watches, warnings, and emergency guidance, use the

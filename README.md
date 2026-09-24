@@ -17,10 +17,9 @@ share browser, mobile, or Roku playback from infrastructure they control.
 - Locally built Expo mobile and Roku clients.
 - CPU-first Docker Compose deployment with optional NVIDIA acceleration.
 
-StreamTumi does not require a hosted StreamTumi service, external identity
-provider, analytics account, or cloud build account. SableID, Apple login, Red
-Devil Radio, external relays, live ingest, Cast, Sentry, and EAS are not part of
-this release.
+StreamTumi does not require a hosted StreamTumi service, analytics account, or
+cloud build account. Runtime services and durable data remain under the
+operator's control.
 
 ## Requirements
 

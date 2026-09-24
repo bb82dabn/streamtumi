@@ -7,9 +7,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Describe the user problem before proposing implementation details. StreamTumi is transitioning to a standalone v0.1 release with local password authentication, CPU-first media processing, and operator-owned data.
-
-        SableID, Apple login, Red Devil, generic relays, live Studio, MediaMTX, coturn, Cast, Sentry, and EAS are outside the v0.1 target.
+        Describe the user problem before proposing implementation details. StreamTumi is a standalone application with local password authentication, CPU-first media processing, and operator-owned data.
 
   - type: textarea
     id: problem
